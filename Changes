@@ -1,4 +1,8 @@
 Revision history for Plack-Session-Store-Catmandu
 
-0.02    2012-12-04
-       - initial release
+{{$NEXT}}
+  - lazily initiate store and bag
+  - switch to Dist::Milla
+
+0.02  2012-12-04
+  - initial release

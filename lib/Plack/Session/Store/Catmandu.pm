@@ -38,16 +38,20 @@ use Catmandu;
 
 sub new {
     my ($class, %opts) = @_;
-    my $store = $opts{store} || Catmandu->default_store;
-    my $bag = $opts{bag} || 'session';
     bless {
-        bag => Catmandu->store($store)->bag($bag),
+        store_name => $opts{store} // Catmandu->default_store,
+        bag_name => $opts{bag} // 'session',
     }, $class;
+}
+
+sub bag {
+    my ($self) = @_;
+    $self->{bag} ||= Catmandu->store($self->{store_name})->bag($self->{bag_name});
 }
 
 sub fetch {
     my ($self, $id) = @_;
-    my $obj = $self->{bag}->get($id) || return;
+    my $obj = $self->bag->get($id) || return;
     delete $obj->{_id};
     $obj;
 }
@@ -55,14 +59,14 @@ sub fetch {
 sub store {
     my ($self, $id, $obj) = @_;
     $obj->{_id} = $id;
-    $self->{bag}->add($obj);
+    $self->bag->add($obj);
     delete $obj->{_id};
     $obj;
 }
 
 sub remove {
     my ($self, $id) = @_;
-    $self->{bag}->delete($id);
+    $self->bag->delete($id);
 }
 
 1;

@@ -10,4 +10,4 @@ require_ok $pkg;
 
 isa_ok $pkg, 'Plack::Session::Store';
 
-done_testing 2;
+done_testing;
